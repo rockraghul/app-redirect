@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Store Link</title>
+    <script>
+      function navigateToStore() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Check for iOS
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          // Redirect to App Store
+          window.location.href = "https://apps.apple.com/app/idYOUR_APP_ID";
+        }
+        // Check for Android
+        else if (/android/i.test(userAgent)) {
+          // Redirect to Google Play Store
+          window.location.href =
+            "https://play.google.com/store/apps/details?id=YOUR_APP_ID";
+        } else {
+          alert("Unsupported platform");
+        }
+      }
+    </script>
+  </head>
+  <body onload="navigateToStore()">
+    <h1>Redirecting to the App Store...</h1>
+  </body>
+</html>
