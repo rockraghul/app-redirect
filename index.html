@@ -3,28 +3,132 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>App Store Link</title>
-    <script>
-      function navigateToStore() {
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    <title>Health Glow App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+      }
+      .message-box {
+        background-color: #e0f2f7; /* Light blue */
+        border: 1px solid #b3e0f2;
+        color: #01579b; /* Dark blue */
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 10px;
+        font-size: 0.9em;
+        display: none; /* Hidden by default */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-3xl font-bold text-gray-800 mb-4">
+        Redirecting to Health Glow App...
+      </h1>
+      <p class="text-gray-600 mb-6">
+        Please wait while we detect your device platform.
+      </p>
+      <div class="flex justify-center items-center">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"
+        ></div>
+      </div>
+      <div id="messageBox" class="message-box"></div>
+    </div>
 
-        // Check for iOS
-        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-          // Redirect to App Store
-          window.location.href = "https://apps.apple.com/app/idYOUR_APP_ID";
-        }
-        // Check for Android
-        else if (/android/i.test(userAgent)) {
-          // Redirect to Google Play Store
-          window.location.href =
-            "https://play.google.com/store/apps/details?id=YOUR_APP_ID";
+    <script>
+      // Function to display messages to the user
+      function showMessage(message, type = "info") {
+        const messageBox = document.getElementById("messageBox");
+        messageBox.textContent = message;
+        messageBox.style.display = "block";
+        if (type === "error") {
+          messageBox.style.backgroundColor = "#ffebee"; // Light red
+          messageBox.style.borderColor = "#ef9a9a";
+          messageBox.style.color = "#c62828"; // Dark red
         } else {
-          alert("Unsupported platform");
+          messageBox.style.backgroundColor = "#e0f2f7"; // Light blue
+          messageBox.style.borderColor = "#b3e0f2";
+          messageBox.style.color = "#01579b"; // Dark blue
         }
       }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const userAgent =
+          navigator.userAgent || navigator.vendor || window.opera;
+        const androidUrl =
+          "https://play.google.com/store/apps/details?id=com.healthandglow&pli=1";
+        const iosUrl =
+          "https://apps.apple.com/us/app/health-glow-online/id6739621416";
+
+        // Check for Android
+        if (/android/i.test(userAgent)) {
+          showMessage(
+            "Android device detected. Redirecting to Google Play Store...",
+            "info"
+          );
+          window.location.href = androidUrl;
+        }
+        // Check for iOS (iPad, iPhone, iPod)
+        else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          showMessage(
+            "iOS device detected. Redirecting to Apple App Store...",
+            "info"
+          );
+          window.location.href = iosUrl;
+        }
+        // Fallback for other devices or desktops
+        else {
+          showMessage(
+            "Could not detect a mobile device. Please choose your app store:",
+            "error"
+          );
+          const container = document.querySelector(".container");
+          const linkContainer = document.createElement("div");
+          linkContainer.className =
+            "mt-6 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4";
+
+          const androidLink = document.createElement("a");
+          androidLink.href = androidUrl;
+          androidLink.textContent = "Get on Google Play";
+          androidLink.className =
+            "bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105";
+          androidLink.target = "_blank"; // Open in new tab
+
+          const iosLink = document.createElement("a");
+          iosLink.href = iosUrl;
+          iosLink.textContent = "Download on the App Store";
+          iosLink.className =
+            "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105";
+          iosLink.target = "_blank"; // Open in new tab
+
+          linkContainer.appendChild(androidLink);
+          linkContainer.appendChild(iosLink);
+          container.appendChild(linkContainer);
+
+          // Hide the spinner if links are shown
+          document.querySelector(".animate-spin").style.display = "none";
+        }
+      });
     </script>
-  </head>
-  <body onload="navigateToStore()">
-    <h1>Redirecting to the App Store...</h1>
   </body>
 </html>
+
